@@ -16,31 +16,35 @@ private:
 	node_t * tail;
 public:
 	queue_t();
-	queue_t & operator =(queue_t<T> const & other);
+	T & operator =(queue_t<T> const & other);
 	queue_t(queue_t const & other);
 	~queue_t();
 	void push(T value);
 	T pop();
-	void del(node_t * head);
+	node_t* header()
+	{
+		return head;
+	}
+	node_t * tailer()
+	{
+		return tail;
+	}
 };
 
 template <typename T>
-queue_t & operator =(queue_t<T> const & other)
+T & queue_t<T>::operator= (queue_t<T> const & other)
 {
+	if (other.head != nullptr) 
+	{
+		this->~queue_t();
+	}
 	node_t* node = other.head;
-	head = new node_t;
-	head->value = node->value;
-	head->next = nullptr;
-	tail = head;
-	node = node->next;
-	while (node != nullptr) {
-		tail->next = new node_t;
-		tail = tail->next;
-		tail->value = node->value;
-		tail->next = nullptr;
+	while (node != nullptr) 
+	{
+		push(node->value);
 		node = node->next;
 	}
-	return
+	return *this;
 }
 
 template <typename T>
@@ -50,26 +54,13 @@ queue_t<T>::queue_t()
 	tail = nullptr;
 }
 
-
 template <typename T>
 queue_t<T>::~queue_t()
 {
-	if (head != nullptr) 
+	while (head != nullptr) 
 	{
-		del(head);
-	}
-}
-
-
-template <typename T>
-void queue_t<T>::del(node_t* node)
-{
-	if (node!= nullptr) 
-	{
-		if (node->next!=nullptr) 
-		{
-			del(node->next);
-		}
+		node_t * node = head;
+		head = head->next;
 		delete node;
 	}
 }
@@ -96,11 +87,11 @@ void queue_t<T>::push(T value)
 template <typename T>
 T queue_t<T>::pop()
 {
-	if (head == nullptr) 
+	if (head == nullptr)
 	{
-		throw Error ("Error delete element");
+		throw Error("Error delete element");
 	}
-	T Deleted_a = head -> value;
+	T Deleted_a = head->value;
 	node_t* param = head;
 	head = head->next;
 	delete param;
@@ -108,19 +99,12 @@ T queue_t<T>::pop()
 }
 
 template <typename T>
-queue_t<T>::queue_t(queue_t const & other) 
+queue_t<T>::queue_t(queue_t const & other)
 {
 	node_t* node = other.head;
-	head = new node_t;
-	head->value = node->value;
-	head->next = nullptr;
-	tail = head;
-	node = node->next;
-	while (node != nullptr) {
-		tail->next = new node_t;
-		tail = tail->next;
-		tail->value = node->value;
-		tail->next = nullptr;
+	while (node != nullptr)
+	{
+		push(node->value);
 		node = node->next;
 	}
 }
