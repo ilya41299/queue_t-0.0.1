@@ -2,32 +2,6 @@
 #include <algorithm>
 #include <cassert>
 
-
-template <typename T>
-class queue_t
-{
-private:
-	struct node_t
-	{
-	node_t *next;
-	T value;
-	}
-	node_t * head;
-	node_t * tail;
-public:
-	queue_t();
-	~queue_t();
-	void push(T value);
-	void back();
-};
-
-template <typename T>
-queue_t<T>::queue_t()
-{
-	head=nullptr
-	tail=nullptr
-}
-
 template <typename T>
 class queue_t
 {
@@ -42,9 +16,10 @@ private:
 	node_t * tail;
 public:
 	queue_t();
+
 	~queue_t();
 	void push(T value);
-	void pop();
+	T pop();
 	void del(node_t * head);
 };
 
@@ -99,40 +74,15 @@ void queue_t<T>::push(T value)
 }
 
 template <typename T>
-void queue_t<T>::pop()
+T queue_t<T>::pop()
 {
 	if (head == nullptr) 
 	{
 		throw Error ("Error delete element");
 	}
+	T Deleted_a = head - value;
 	node_t* param = head;
 	head = head->next;
 	delete param;
-}
-
-template <typename T>
-queue_t<T>::~queue_t()
-{
-	
-}
-
-
-template <typename T>
-void queue_t<T>::push(T value)
-{
-	if(head==nullptr)
-	{
-		head->value=value;
-		head->next=nullptr;
-		tail=head;
-	}
-	else 
-	{
-		
-	}
-}
-
-template <typename T>
-void queue_t<T>::back()
-{
+	return Deleted_a;
 }
