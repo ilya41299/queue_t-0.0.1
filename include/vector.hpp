@@ -89,7 +89,7 @@ T queue_t<T>::pop()
 {
 	if (head == nullptr)
 	{
-		throw Error("Error delete element");
+		throw std::logic_error("Error delete element");
 	}
 	T Deleted_a = head->value;
 	node_t* param = head;
