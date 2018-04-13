@@ -4,191 +4,135 @@
 
 
 template <typename T>
-class vector_t
+class queue_t
 {
 private:
-	T * elements_;
-	std::size_t size_;
-	std::size_t capacity_;
+	struct node_t
+	{
+	node_t *next;
+	T value;
+	}
+	node_t * head;
+	node_t * tail;
 public:
-	vector_t();
-	vector_t(vector_t const & other);
-	vector_t & operator =(vector_t const & other);
-	~vector_t();
-
-	std::size_t size() const;
-	std::size_t capacity() const;
-	T & at (std::size_t index);
-	void push_back(T value);
-	void pop_back();
-
-	T & operator [](std::size_t index);
-	T operator [](std::size_t index) const;
-
-	bool operator ==(vector_t const & other) const;
+	queue_t();
+	~queue_t();
+	void push(T value);
+	void back();
 };
 
 template <typename T>
-bool operator !=(vector_t<T> const & lhs, vector_t<T> const & rhs);
-
-template <typename T>
-vector_t<T>::vector_t()
+queue_t<T>::queue_t()
 {
-	elements_ = nullptr;
-	size_ = 0;
-	capacity_ = 0;
+	head=nullptr
+	tail=nullptr
 }
 
 template <typename T>
-vector_t<T>::vector_t(vector_t<T> const & other)
+class queue_t
 {
-	size_ = other.size_;
-	capacity_ = other.capacity_;
-	elements_ = new T[capacity_];
-	for (std::size_t i = 0; i < size_; ++i)
+private:
+	struct node_t
 	{
-		elements_[i] = other.elements_[i];
+		node_t *next;
+		T value;
+	};
+private:
+	node_t * head;
+	node_t * tail;
+public:
+	queue_t();
+	~queue_t();
+	void push(T value);
+	void pop();
+	void del(node_t * head);
+};
+
+template <typename T>
+queue_t<T>::queue_t()
+{
+	head = nullptr;
+	tail = nullptr;
+}
+
+
+template <typename T>
+queue_t<T>::~queue_t()
+{
+	if (head != nullptr) 
+	{
+		del(head);
+	}
+}
+
+
+template <typename T>
+void queue_t<T>::del(node_t* node)
+{
+	if (node!= nullptr) 
+	{
+		if (node->next!=nullptr) 
+		{
+			del(node->next);
+		}
+		delete node;
 	}
 }
 
 template <typename T>
-vector_t<T> & vector_t<T>::operator =(vector_t const & other)
+void queue_t<T>::push(T value)
 {
-	if (this != &other)
+	if (head == nullptr)
 	{
-		delete[] elements_;
-		size_ = other.size_;
-		capacity_ = other.capacity_;
-		elements_ = new T[other.capacity_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			elements_[i] = other.elements_[i];
-		}
-	}
-	return *this;
-}
-
-template <typename T>
-bool vector_t<T>::operator ==(vector_t const & other) const
-{
-	if (size_ == other.size_)
-	{
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			if (elements_[i] != other.elements_[i])
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	else return false;
-}
-
-template <typename T>
-vector_t<T>::~vector_t()
-{
-	delete[] elements_;
-}
-
-template <typename T>
-std::size_t vector_t<T>::size() const
-{
-	return size_;
-}
-
-template <typename T>
-std::size_t vector_t<T>::capacity() const
-{
-	return capacity_;
-}
-
-template <typename T>
-void vector_t<T>::push_back(T value)
-{
-	if (size_ == 0)
-	{
-		size_ = 1;
-		capacity_ = 1;
-		elements_ = new T[capacity_];
-		elements_[0] = value;
-	}
-	else if (size_ == capacity_)
-	{
-		T * mas;
-		mas = new T[size_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			mas[i] = elements_[i];
-		}
-		delete[] elements_;
-		capacity_ *= 2;
-		elements_ = new T[capacity_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			elements_[i] = mas[i];
-		}
-		delete[] mas;
-		elements_[size_] = value;
-		size_++;
+		head = new node_t;
+		head->value = value;
+		head->next = nullptr;
+		tail = head;
 	}
 	else
 	{
-		elements_[size_] = value;
-		size_++;
+		tail->next = new node_t;
+		tail = tail->next;
+		tail->value = value;
+		tail->next = nullptr;
 	}
 }
 
 template <typename T>
-void vector_t<T>::pop_back()
+void queue_t<T>::pop()
 {
-	size_--;
-	if (size_ == 0 || size_ * 4 == capacity_)
+	if (head == nullptr) 
 	{
-		T *mas;
-		mas = new T[size_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			mas[i] = elements_[i];
-		}
-		delete[] elements_;
-		capacity_ = capacity_ / 2;
-		elements_ = new T[capacity_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			elements_[i] = mas[i];
-		}
-		delete[] mas;
+		throw Error ("Error delete element");
 	}
+	node_t* param = head;
+	head = head->next;
+	delete param;
 }
 
 template <typename T>
-T & vector_t<T>::operator [](std::size_t index)
+queue_t<T>::~queue_t()
 {
-	return elements_[index];
+	
 }
 
-template <typename T>
-T vector_t<T>::operator [](std::size_t index) const
-{
-	return elements_[index];
-}
 
 template <typename T>
-bool operator !=(vector_t<T> const & lhs, vector_t<T> const & rhs)
+void queue_t<T>::push(T value)
 {
-	if (lhs == rhs)
+	if(head==nullptr)
 	{
-		return false;
+		head->value=value;
+		head->next=nullptr;
+		tail=head;
 	}
-	return true;
+	else 
+	{
+		
+	}
 }
 
 template <typename T>
-T & vector_t<T>::at (std::size_t index) 
+void queue_t<T>::back()
 {
-	if ( index >= size_ ) {
-		throw std::out_of_range( "Error range" );
-	}
-	return elements_[index];
 }
