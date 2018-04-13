@@ -16,7 +16,20 @@ private:
 	node_t * tail;
 public:
 	queue_t();
-	queue_t<T> & operator= (queue_t<T> & other);
+	queue_t<T> & operator= (queue_t<T> & other)
+{
+	if (other.head != nullptr) 
+	{
+		this->~queue_t();
+	}
+	node_t* node = other.head;
+	while (node != nullptr) 
+	{
+		push(node->value);
+		node = node->next;
+	}
+	return *this;
+}
 	queue_t(queue_t & other);
 	~queue_t();
 	void push(T value);
@@ -31,21 +44,7 @@ public:
 	}
 };
 
-template <typename T>
-queue_t<T> & operator= (queue_t<T> & other)
-{
-	if (other.head != nullptr) 
-	{
-		this->~queue_t();
-	}
-	node_t* node = other.head;
-	while (node != nullptr) 
-	{
-		push(node->value);
-		node = node->next;
-	}
-	return *this;
-}
+
 
 template <typename T>
 queue_t<T>::queue_t()
