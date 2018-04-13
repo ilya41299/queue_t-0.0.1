@@ -16,12 +16,32 @@ private:
 	node_t * tail;
 public:
 	queue_t();
+	queue_t & operator =(queue_t<T> const & other);
 	queue_t(queue_t const & other);
 	~queue_t();
 	void push(T value);
 	T pop();
 	void del(node_t * head);
 };
+
+template <typename T>
+queue_t & operator =(queue_t<T> const & other)
+{
+	node_t* node = other.head;
+	head = new node_t;
+	head->value = node->value;
+	head->next = nullptr;
+	tail = head;
+	node = node->next;
+	while (node != nullptr) {
+		tail->next = new node_t;
+		tail = tail->next;
+		tail->value = node->value;
+		tail->next = nullptr;
+		node = node->next;
+	}
+	return
+}
 
 template <typename T>
 queue_t<T>::queue_t()
