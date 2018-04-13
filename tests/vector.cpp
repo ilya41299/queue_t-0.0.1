@@ -6,8 +6,8 @@
 TEST_CASE("Creat")
 {
 	queue_t<int> My_queue;
-	REQUIRE( My_queue.head == nullptr );
-	REQUIRE( My_queue.tail == nullptr );
+	REQUIRE( My_queue.header() == nullptr );
+	REQUIRE( My_queue.tailer() == nullptr );
 	
 }
 
@@ -33,14 +33,13 @@ TEST_CASE("pop and push")
 	REQUIRE( My_queue.pop() == 9.2);
 }
 
-TEST_CASE("Error pop")
+TEST_CASE("throw")
 {
-	queue_t<int> My_queue;
-	REQUIRE_THROWS_AS( My_queue.pop() , Error);
-	
+    queue_t<int> My_queue;
+    REQUIRE_THROWS_AS( My_queue.pop() , std::logic_error);
 }
 
-TEST_CASE("Cop")
+TEST_CASE("Cop operator =")
 {
 	queue_t<int> My_queue_1;
 	My_queue_1.push(6);
