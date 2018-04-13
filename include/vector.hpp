@@ -16,7 +16,7 @@ private:
 	node_t * tail;
 public:
 	queue_t();
-	T & operator =(queue_t<T> & other);
+	queue_t<T> & queue_t<T>::operator= (queue_t<T> & other);
 	queue_t(queue_t & other);
 	~queue_t();
 	void push(T value);
