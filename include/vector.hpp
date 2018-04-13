@@ -32,7 +32,7 @@ public:
 };
 
 template <typename T>
-queue_t<T> & operator= (queue_t<T> & other);
+queue_t<T> & operator= (queue_t<T> & other)
 {
 	if (other.head != nullptr) 
 	{
