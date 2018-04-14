@@ -11,7 +11,7 @@ TEST_CASE("Creat")
 	
 }
 
-TEST_CASE("pop and push")
+TEST_CASE("pop and push <int>")
 {
 	queue_t<int> My_queue;
 	My_queue.push(8);
@@ -22,7 +22,7 @@ TEST_CASE("pop and push")
 	REQUIRE( My_queue.pop() == 9);
 }
 
-TEST_CASE("pop and push")
+TEST_CASE("pop and push <double>")
 {
 	queue_t<double> My_queue;
 	My_queue.push(8.3);
